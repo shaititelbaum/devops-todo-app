@@ -1,0 +1,24 @@
+#Custom
+git-clean.sh
+
+# Mac OS files
+.DS_Store
+
+# IDEs and Editors (VS Code)
+.vscode/
+*.code-workspace
+
+# Python compiled files & environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Local Environment Variables / Secrets
+.env
+*.pem
+*.key
