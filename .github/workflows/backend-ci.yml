@@ -29,9 +29,9 @@ jobs:
       run: |
         pylint --errors-only .
 
-    - name: Build Docker Image
+    - name: Build Docker Image (Updated Step 5)
       run: |
-        docker build -t devops-todo-backend:test .
+        docker build -t devops-todo-backend:step5 .
 
     - name: Configure AWS credentials
       if: github.ref == 'refs/heads/master'
