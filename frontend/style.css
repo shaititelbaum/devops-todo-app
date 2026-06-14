@@ -614,7 +614,7 @@ li {
     color: #bae6fd;
     margin-bottom: 15px;
     /* התיקון כאן: הצרת הכפתור ומרכוז */
-    width: 60%;
+    width: 100%;
     margin: 0 auto 15px auto;
     display: block;
 }
