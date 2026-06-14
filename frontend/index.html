@@ -85,13 +85,15 @@
                 <div class="advanced-inputs" style="margin-bottom: 0; background: transparent; border: none; padding: 0;">
                     <div class="input-subgroup full-width">
                         <label>סוג החיסון/טיפול:</label>
-                        <select id="vac-type">
+                        <select id="vac-type" onchange="handleVaccineTypeChange()"> 
                             <option value="משושה">💉 חיסון משושה</option>
                             <option value="כלבת">🚨 חיסון כלבת</option>
                             <option value="תולעת הפארק">🐛 תולעת הפארק (ספירוצירקה)</option>
                             <option value="שעלת">🤧 חיסון שעלת</option>
                             <option value="תילוע ופרעושים">💊 כדור תילוע / אמפולה</option>
+                            <option value="other">📝 אחר...</option> 
                         </select>
+                        <input type="text" id="vac-type-other" class="dynamic-text-input hidden" placeholder="הקלידו סוג טיפול">
                     </div>
                     <div class="input-subgroup">
                         <label>תאריך ביצוע:</label>
@@ -258,6 +260,18 @@
         // ==========================================
         // לוגיקת החיסונים
         // ==========================================
+        // משיכת רשימת החיסונים מהשרת
+        async function fetchVaccines() {
+            try {
+                const response = await fetch(VACCINES_API_URL);
+                if (!response.ok) throw new Error('API failed');
+                const vaccines = await response.json();
+                renderVaccines(vaccines);
+            } catch (error) {
+                console.error("Error fetching vaccines:", error);
+            }
+        }
+        
         function toggleVaccineForm() {
             const form = document.getElementById('vaccine-form');
             form.classList.toggle('active');
@@ -266,19 +280,31 @@
             }
         }
 
-        async function fetchVaccines() {
-            try {
-                const response = await fetch(VACCINES_API_URL);
-                if (!response.ok) throw new Error('API failed');
-                const vaccines = await response.json();
-                renderVaccines(vaccines);
-            } catch (error) {
-                console.error("Could not fetch vaccines", error);
+        function handleVaccineTypeChange() {
+            const select = document.getElementById('vac-type');
+            const otherInput = document.getElementById('vac-type-other');
+            if (select.value === 'other') {
+                otherInput.classList.remove('hidden');
+            } else {
+                otherInput.classList.add('hidden');
+                otherInput.value = '';
             }
         }
 
-        async function addVaccine() {
-            const type = document.getElementById('vac-type').value;
+       async function addVaccine() {
+            // שמנו let במקום const כדי שנוכל לשנות את הערך
+            let type = document.getElementById('vac-type').value;
+
+            // --- התוספת שלנו עבור בחירת "אחר" ---
+            if (type === 'other') {
+                type = document.getElementById('vac-type-other').value.trim();
+                if (!type) {
+                    alert("חובה להקליד את סוג הטיפול!");
+                    return;
+                }
+            }
+            // ------------------------------------
+
             const givenDate = document.getElementById('vac-given-date').value;
             const expiryDate = document.getElementById('vac-expiry-date').value;
 
@@ -304,7 +330,7 @@
             } catch (error) {
                 console.error("Failed to save vaccine", error);
             }
-        }
+        } 
 
         async function deleteVaccine(id) {
             if(!confirm("למחוק תיעוד זה?")) return;

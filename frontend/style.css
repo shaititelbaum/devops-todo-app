@@ -175,7 +175,7 @@ input[type="text"]:focus {
     font-weight: bold;
 }
 
-.input-subgroup select, .input-subgroup input[type="date"], .input-subgroup input.location-input {
+.input-subgroup select, .input-subgroup input[type="date"], .input-subgroup input.location-input, .input-subgroup input[type="text"].dynamic-text-input {
     background: rgba(30, 41, 59, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
@@ -797,4 +797,14 @@ li {
 
 #input-section, #history-section, #vaccine-section, #ai-section {
     animation: fadeIn 0.3s ease-in-out;
+}
+
+.dynamic-text-input {
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none !important;
 }
